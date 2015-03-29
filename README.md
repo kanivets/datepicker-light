@@ -14,10 +14,11 @@ In your web page:
 
 ```html
 <script src="jquery.js"></script>
+<script src="dist/datepicker-light.min.css"></script>
 <script src="dist/datepicker-light.min.js"></script>
 <script>
   jQuery(function ($) {
-    $.awesome(); // "awesome"
+    $('input[type=date]').datepickerLight();
   });
 </script>
 ```
