@@ -38,12 +38,20 @@
   		arrowDaysEvents = function(year, month){
   			$('.arrow.right', dapickerHTML).off('click');
   			$('.arrow.right', dapickerHTML).on('click', function(){
-  				createDaysHTML(year, month + 1, 0);
+          if(month == 11) {
+            createDaysHTML(year + 1, 0, 0);
+          } else {
+            createDaysHTML(year, month + 1, 0);
+          }
   				return false;
   			});
   			$('.arrow.left', dapickerHTML).off('click');
   			$('.arrow.left', dapickerHTML).on('click', function(){
-  				createDaysHTML(year, month - 1, 0);
+          if(month == 0) {
+  				  createDaysHTML(year - 1, 11, 0);
+          } else {
+            createDaysHTML(year, month - 1, 0);
+          }
   				return false;
   			});
   			
@@ -88,6 +96,16 @@
 				  $('.dpl' + inputNumber).val(monthNames[month] + ' ' + $(this).text() +', ' + year);
 				  return false;
 			  });
+        $('.today', dapickerHTML).off('click');
+        $('.today', dapickerHTML).on('click', function(){
+          var time = new Date(),
+          currentYear = time.getFullYear(),
+          currentMonth = time.getMonth(),
+          currentDay = time.getDate();
+          $('.dpl' + inputNumber).val(monthNames[currentMonth] + ' ' + currentDay +', ' + currentYear);
+          createDaysHTML(currentYear, currentMonth, currentDay);
+          return false;
+        });
   		},
 
   		createMonthHTML = function(year, month) {
