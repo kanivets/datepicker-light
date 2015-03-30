@@ -17,23 +17,53 @@
   							'<a class="today">Today</a>' +
   						'</div>'),
 
-  		daysHTML = $('<div class="monthly">' +
-  						'<div class="weekdays">' +
-  							'<div>SU</div>' +
-  							'<div>MO</div>' +
-  							'<div>TU</div>' +
-  							'<div>WE</div>' +
-  							'<div>TH</div>' +
-  							'<div>FR</div>' +
-  							'<div>SA</div>' +
-  						'</div>' +
-  						'<div class="days"></div>' +
-  					'</div>'),
+      daysHTML = $('<div class="monthly">' +
+              '<div class="weekdays">' +
+                '<div>SU</div>' +
+                '<div>MO</div>' +
+                '<div>TU</div>' +
+                '<div>WE</div>' +
+                '<div>TH</div>' +
+                '<div>FR</div>' +
+                '<div>SA</div>' +
+              '</div>' +
+              '<div class="days"></div>' +
+            '</div>'),
+
+  		monthsHTML = $('<div class="yearly">' +
+  						          '<div class="months">' +
+                          '<div class="month">Jan</div>' +
+                          '<div class="month">Feb</div>' +
+                          '<div class="month">Mar</div>' +
+                          '<div class="month">Apr</div>' +
+                          '<div class="month">May</div>' +
+                          '<div class="month">Jun</div>' +
+                          '<div class="month">Jul</div>' +
+                          '<div class="month">Aug</div>' +
+                          '<div class="month">Sep</div>' +
+                          '<div class="month">Oct</div>' +
+                          '<div class="month">Nov</div>' +
+                          '<div class="month">Dec</div>' +
+                        '</div>' +
+  					         '</div>'),
 
   		monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   		posX = 0,
   		posY = 0,
   		inputNumber = 0,
+
+      arrowMonthEvents = function(year){
+        $('.arrow.right', dapickerHTML).off('click');
+        $('.arrow.right', dapickerHTML).on('click', function(){
+          createMonthHTML(year + 1, 0)
+          return false;
+        });
+        $('.arrow.left', dapickerHTML).off('click');
+        $('.arrow.left', dapickerHTML).on('click', function(){
+          createMonthHTML(year - 1, 0)
+          return false;
+        });
+      },
 
   		arrowDaysEvents = function(year, month){
   			$('.arrow.right', dapickerHTML).off('click');
@@ -98,18 +128,27 @@
 			  });
         $('.today', dapickerHTML).off('click');
         $('.today', dapickerHTML).on('click', function(){
-          var time = new Date(),
-          currentYear = time.getFullYear(),
-          currentMonth = time.getMonth(),
-          currentDay = time.getDate();
+          var currentDate = new Date(),
+          currentYear = currentDate.getFullYear(),
+          currentMonth = currentDate.getMonth(),
+          currentDay = currentDate.getDate();
           $('.dpl' + inputNumber).val(monthNames[currentMonth] + ' ' + currentDay +', ' + currentYear);
           createDaysHTML(currentYear, currentMonth, currentDay);
+          return false;
+        });
+        $('.value', dapickerHTML).off('click');
+        $('.value', dapickerHTML).on('click', function(){
+          createMonthHTML(year, month);
           return false;
         });
   		},
 
   		createMonthHTML = function(year, month) {
-  			
+        arrowMonthEvents(year);
+        $('.heading .value', dapickerHTML).html(year);
+        $('.container', dapickerHTML).html(monthsHTML);
+  			$('.dpl' + inputNumber).val(monthNames[month] + ', ' + year);
+
   		},
 
   		createYearsHTML = function(year, month) {
@@ -121,7 +160,7 @@
   			posY = $(obj).offset().top + $(obj).outerHeight() + 5;
   		},
 
-	  	createDatepickerHTML = function(obj){	  		
+	  	addDatepickerContainer = function(obj){	  		
 	  		$(dapickerHTML).css({'left' : posX, 'top': posY});
 	  		$('body').append(dapickerHTML);
 
@@ -132,15 +171,15 @@
       $(this).on('focus', function(){
       	$(this).blur();
       });
-      var time = new Date(),
-      currentYear = time.getFullYear(),
-      currentMonth = time.getMonth(),
-      currentDay = time.getDate();
+      var currentDate = new Date(),
+      currentYear = currentDate.getFullYear(),
+      currentMonth = currentDate.getMonth(),
+      currentDay = currentDate.getDate();
       $(this).val(monthNames[currentMonth] + ' ' + currentDay +', ' + currentYear);
       inputNumber = i;
       createDaysHTML(currentYear, currentMonth, currentDay);
       calculateWidgetPosition(this);
-      createDatepickerHTML(this);
+      addDatepickerContainer(this);
     });
 
   };
