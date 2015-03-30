@@ -36,10 +36,8 @@
   		inputNumber = 0,
 
   		arrowDaysEvents = function(year, month){
-  			console.log('arrowDaysEvents');
   			$('.arrow.right', dapickerHTML).off('click');
   			$('.arrow.right', dapickerHTML).on('click', function(){
-  				console.log('click');
   				createDaysHTML(year, month + 1, 0);
   				return false;
   			});
@@ -73,7 +71,6 @@
 			var firstDayOfMonth, lastDayOfMonth, time, dayStatus;
 			$('.dpl' + inputNumber).val(monthNames[month] + ' ' + date +', ' + year);
 			$('.days', daysHTML).empty();
-			console.log($(daysHTML));
 			time = new Date(year, month);
 			time.setDate(1);
 			firstDayOfMonth = time.getDay();
@@ -84,16 +81,14 @@
 				$('.days:not(.disabled)', daysHTML).append('<div class="' + dayStatus + '">' + i + '</div>');
 			}
 			addNextDays(year, month, lastDayOfMonth);
-			$('.days .day:not(.disabled)', daysHTML).off('click');
-			$('.days .day:not(.disabled)', daysHTML).on('click', function(){
+			$('.heading .value', dapickerHTML).html(monthNames[month] + ' ' + year);
+			$('.container', dapickerHTML).html(daysHTML);
+			$(daysHTML).on('click', '.day:not(.disabled)', function(){
 				$('.days .day', daysHTML).removeClass('active');
 				$(this).addClass('active');
 				$('.dpl' + inputNumber).val(monthNames[month] + ' ' + $(this).text() +', ' + year);
-				
 				return false;
 			});
-			$('.heading .value', dapickerHTML).html(monthNames[month] + ' ' + year);
-			$('.container', dapickerHTML).html(daysHTML);
   		},
 
   		createMonthHTML = function(year, month) {
