@@ -167,6 +167,9 @@
 	  	};
 
     return this.each(function (i) {
+      if (navigator.userAgent.indexOf('Chrome') != -1) {
+        $('input[type="date"]').prop('type','text');
+      }
       $(this).addClass('datepicker-field dpl' + i);
       $(this).on('focus', function(){
       	$(this).blur();
