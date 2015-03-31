@@ -56,6 +56,19 @@
   		posY = 0,
   		inputNumber = 0,
 
+      arrowYearsEvents = function(year){
+        $('.arrow.right', dapickerHTML).off('click');
+        $('.arrow.right', dapickerHTML).on('click', function(){
+          createYearsHTML(year + 16, true);
+          return false;
+        });
+        $('.arrow.left', dapickerHTML).off('click');
+        $('.arrow.left', dapickerHTML).on('click', function(){
+          createYearsHTML(year - 16, true);
+          return false;
+        });
+      },
+
       arrowMonthEvents = function(year){
         $('.arrow.right', dapickerHTML).off('click');
         $('.arrow.right', dapickerHTML).on('click', function(){
@@ -180,11 +193,40 @@
         });
   		},
 
-  		createYearsHTML = function(year) {
+  		createYearsHTML = function(year, current) {
+        console.log(current);
+        arrowYearsEvents(year);
+        $('.heading .value', dapickerHTML).html(year-15 + ' - ' +year);
+        $('.years', yearsHTML).empty();
         for(var i = year - 15; i <= year; i++) {
-          $('.years', yearsHTML).append('<div>' + i + '</div>');
+          yearStatus = (year == i) ? "year active" : "year";
+          if(current) {yearStatus = "year";}
+          $('.years', yearsHTML).append('<div class="' + yearStatus + '">' + i + '</div>');
         }
         $('.container', dapickerHTML).html(yearsHTML);
+        $(yearsHTML).on('click', '.year', function(i){
+          $('.year', yearsHTML).removeClass('active');
+          $(this).addClass('active');
+          $('.dpl' + inputNumber).val($(this).text());
+          return false;
+        });
+        $('.today', dapickerHTML).off('click');
+        $('.today', dapickerHTML).on('click', function(){
+          var currentDate = new Date(),
+          currentYear = currentDate.getFullYear();
+          $('.dpl' + inputNumber).val(currentYear);
+          createYearsHTML(currentYear);
+          return false;
+        });        
+        $('.value', dapickerHTML).off('click');
+        $('.value', dapickerHTML).on('click', function(){
+          var currentDate = new Date(),
+          currentYear = currentDate.getFullYear(),
+          currentMonth = currentDate.getMonth(),
+          currentDay = currentDate.getDate();
+          createDaysHTML(currentYear, currentMonth, currentDay);
+          return false;
+        });
   		},
 
   		calculateWidgetPosition = function(obj){

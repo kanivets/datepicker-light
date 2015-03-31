@@ -170,7 +170,7 @@
 	padding: 20px 0;
 }
 
-.datepicker .years div {
+.datepicker .years .year {
 	width: 75px;
 	float: left;
 	font-size: 15px;
@@ -180,6 +180,30 @@
 	cursor: pointer;
 	position: relative;
 	z-index: 2;
+}
+
+.datepicker .years .year.active:before {
+	content: "";
+	position: absolute;
+	width: 50px;
+	height: 24px;
+	top: 6px;
+	left: 13px;
+	background-color: #e8736f;
+	border-radius: 13px;
+	z-index: -1;
+}
+
+.datepicker .years .year:hover:before {
+	content: "";
+	position: absolute;
+	width: 48px;
+	height: 22px;
+	top: 6px;
+	left: 13px;
+	border: 1px solid #e8736f;
+	border-radius: 13px;
+	z-index: -1;
 }
 
 .datepicker .today {
