@@ -165,6 +165,23 @@
 	z-index: -1;
 }
 
+.datepicker .years {
+	overflow: hidden;
+	padding: 20px 0;
+}
+
+.datepicker .years div {
+	width: 75px;
+	float: left;
+	font-size: 15px;
+	text-align: left;
+	text-align: center;
+	line-height: 35px;
+	cursor: pointer;
+	position: relative;
+	z-index: 2;
+}
+
 .datepicker .today {
 	display: block;
 	margin: 0 auto;

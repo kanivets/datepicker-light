@@ -8,27 +8,27 @@
 (function ($) {
   $.fn.datepickerLight = function () {
   	var dapickerHTML = $('<div class="datepicker">' +
-  							'<div class="heading">' +
-  								'<a class="arrow left"></a>' +
-  								'<a class="arrow right"></a>' +
-  								'<div class="value"></div>' +
-  							'</div>' +
-  							'<div class="container"></div>' +
-  							'<a class="today">Today</a>' +
-  						'</div>'),
+  							           '<div class="heading">' +
+  								          '<a class="arrow left"></a>' +
+  								          '<a class="arrow right"></a>' +
+  								          '<div class="value"></div>' +
+  							           '</div>' +
+  							           '<div class="container"></div>' +
+  							           '<a class="today">Today</a>' +
+  						            '</div>'),
 
       daysHTML = $('<div class="monthly">' +
-              '<div class="weekdays">' +
-                '<div>SU</div>' +
-                '<div>MO</div>' +
-                '<div>TU</div>' +
-                '<div>WE</div>' +
-                '<div>TH</div>' +
-                '<div>FR</div>' +
-                '<div>SA</div>' +
-              '</div>' +
-              '<div class="days"></div>' +
-            '</div>'),
+                      '<div class="weekdays">' +
+                        '<div>SU</div>' +
+                        '<div>MO</div>' +
+                        '<div>TU</div>' +
+                        '<div>WE</div>' +
+                        '<div>TH</div>' +
+                        '<div>FR</div>' +
+                        '<div>SA</div>' +
+                      '</div>' +
+                      '<div class="days"></div>' +
+                    '</div>'),
 
   		monthsHTML = $('<div class="yearly">' +
   						          '<div class="months">' +
@@ -47,6 +47,10 @@
                         '</div>' +
   					         '</div>'),
 
+      yearsHTML = $('<div class="year-range">' +
+                        '<div class="years"></div>' +
+                     '</div>'),
+
   		monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   		posX = 0,
   		posY = 0,
@@ -55,12 +59,12 @@
       arrowMonthEvents = function(year){
         $('.arrow.right', dapickerHTML).off('click');
         $('.arrow.right', dapickerHTML).on('click', function(){
-          createMonthHTML(year + 1, 0)
+          createMonthHTML(year + 1);
           return false;
         });
         $('.arrow.left', dapickerHTML).off('click');
         $('.arrow.left', dapickerHTML).on('click', function(){
-          createMonthHTML(year - 1, 0)
+          createMonthHTML(year - 1);
           return false;
         });
       },
@@ -146,24 +150,41 @@
   		createMonthHTML = function(year, month) {
         arrowMonthEvents(year);
         $('.heading .value', dapickerHTML).html(year);
+        $('.month', monthsHTML).removeClass('active');
         $('.month', monthsHTML).each(function(i, obj){
           if(i == month) {
             $(obj).addClass('active');
           }
         });
         $('.container', dapickerHTML).html(monthsHTML);
-  			$('.dpl' + inputNumber).val(monthNames[month] + ', ' + year);
+  			//$('.dpl' + inputNumber).val(monthNames[month] + ', ' + year);
         $(monthsHTML).on('click', '.month', function(i){
           $('.month', monthsHTML).removeClass('active');
           $(this).addClass('active');
           $('.dpl' + inputNumber).val(monthNames[$(this).data('month')] + ', ' + year);
           return false;
         });
-
+        $('.today', dapickerHTML).off('click');
+        $('.today', dapickerHTML).on('click', function(){
+          var currentDate = new Date(),
+          currentYear = currentDate.getFullYear(),
+          currentMonth = currentDate.getMonth();
+          $('.dpl' + inputNumber).val(monthNames[currentMonth] + ', ' + currentYear);
+          createMonthHTML(currentYear, currentMonth);
+          return false;
+        });        
+        $('.value', dapickerHTML).off('click');
+        $('.value', dapickerHTML).on('click', function(){
+          createYearsHTML(year);
+          return false;
+        });
   		},
 
-  		createYearsHTML = function(year, month) {
-
+  		createYearsHTML = function(year) {
+        for(var i = year - 15; i <= year; i++) {
+          $('.years', yearsHTML).append('<div>' + i + '</div>');
+        }
+        $('.container', dapickerHTML).html(yearsHTML);
   		},
 
   		calculateWidgetPosition = function(obj){
