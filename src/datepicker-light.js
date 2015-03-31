@@ -32,18 +32,18 @@
 
   		monthsHTML = $('<div class="yearly">' +
   						          '<div class="months">' +
-                          '<div class="month">Jan</div>' +
-                          '<div class="month">Feb</div>' +
-                          '<div class="month">Mar</div>' +
-                          '<div class="month">Apr</div>' +
-                          '<div class="month">May</div>' +
-                          '<div class="month">Jun</div>' +
-                          '<div class="month">Jul</div>' +
-                          '<div class="month">Aug</div>' +
-                          '<div class="month">Sep</div>' +
-                          '<div class="month">Oct</div>' +
-                          '<div class="month">Nov</div>' +
-                          '<div class="month">Dec</div>' +
+                          '<div data-month="0" class="month">Jan</div>' +
+                          '<div data-month="1" class="month">Feb</div>' +
+                          '<div data-month="2" class="month">Mar</div>' +
+                          '<div data-month="3" class="month">Apr</div>' +
+                          '<div data-month="4" class="month">May</div>' +
+                          '<div data-month="5" class="month">Jun</div>' +
+                          '<div data-month="6" class="month">Jul</div>' +
+                          '<div data-month="7" class="month">Aug</div>' +
+                          '<div data-month="8" class="month">Sep</div>' +
+                          '<div data-month="9" class="month">Oct</div>' +
+                          '<div data-month="10" class="month">Nov</div>' +
+                          '<div data-month="11" class="month">Dec</div>' +
                         '</div>' +
   					         '</div>'),
 
@@ -146,8 +146,19 @@
   		createMonthHTML = function(year, month) {
         arrowMonthEvents(year);
         $('.heading .value', dapickerHTML).html(year);
+        $('.month', monthsHTML).each(function(i, obj){
+          if(i == month) {
+            $(obj).addClass('active');
+          }
+        });
         $('.container', dapickerHTML).html(monthsHTML);
   			$('.dpl' + inputNumber).val(monthNames[month] + ', ' + year);
+        $(monthsHTML).on('click', '.month', function(i){
+          $('.month', monthsHTML).removeClass('active');
+          $(this).addClass('active');
+          $('.dpl' + inputNumber).val(monthNames[$(this).data('month')] + ', ' + year);
+          return false;
+        });
 
   		},
 
